@@ -1,0 +1,15 @@
+{
+  "name": "ngroup/simple-cdn",
+  "description": "simple cdn",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Piotr Grzelka",
+      "email": "piotr.grzelka@ngroup.pl"
+    }
+  ],
+  "require": {
+    "imagine/imagine": "0.7.x-dev"
+  }
+}
