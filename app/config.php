@@ -7,8 +7,8 @@ $config = [
 ];
 
 
-if (file_exists('./config-local.php')) {
-    $config = array_merge_recursive($config, require_once './config-local.php');
+if (file_exists(__DIR__ . '/config-local.php')) {
+    $config = array_merge_recursive($config, require_once __DIR__ . '/config-local.php');
 }
 
 return $config;

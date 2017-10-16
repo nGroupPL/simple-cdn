@@ -4,8 +4,8 @@
 namespace app;
 
 use app\providers\BaseProvider;
-use Imagine\Image\Box;
 use Imagine\Gd\Imagine;
+use Imagine\Image\Box;
 
 /**
  * Class Cdn
@@ -45,6 +45,7 @@ class Cdn
     {
         $this->config = $config;
         $this->_loader();
+        $this->_logger();
         $this->_request();
         $this->_host();
         $this->_obtainFile();
@@ -65,6 +66,7 @@ class Cdn
      */
     private function _resize()
     {
+        Log::log("try to resize: {$this->original_file} > {$this->request->uri}");
         $this->resized_file = ROOT . '/public/' . ltrim($this->request->uri, '/');
         Helper::mkdir(pathinfo($this->resized_file, PATHINFO_DIRNAME));
 
@@ -88,6 +90,7 @@ class Cdn
     private function _host()
     {
         foreach ($this->config['hosts'] as $host => $config) {
+
             if ($host == $this->request->host
                 || ($host[0] == '*' && strpos($this->request->host, substr($host, 1)))) {
 
@@ -97,6 +100,7 @@ class Cdn
             }
         }
 
+        Log::log("Host {$this->request->host} not allowed");
         throw new \Exception("Forbidden", 403);
     }
 
@@ -108,13 +112,22 @@ class Cdn
         $this->request = new Request();
     }
 
+    private function _logger()
+    {
+        Log::init(dirname(__DIR__) . '/app.log');
+    }
+
     /**
      * Init spl auto loader
      */
     private function _loader()
     {
         spl_autoload_register(function ($class) {
-            include ROOT . '/' . str_replace('\\', '/', $class) . '.php';
+            $file = ROOT . '/' . str_replace('\\', '/', $class) . '.php';
+            if (!file_exists($file)) {
+                exit("file ($file) for class $class not exists");
+            }
+            include $file;
         });
     }
 }

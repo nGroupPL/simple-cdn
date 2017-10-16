@@ -3,6 +3,7 @@
 namespace app\providers;
 
 
+use app\Log;
 use app\Request;
 
 /**
@@ -26,6 +27,8 @@ class CurlProvider extends BaseProvider
         $url = "https://" . $request->host . '/api/v1/cdn?file='
             . base64_encode($request->path . '/' . $request->filename)
             . '&token=' . $this->config['token'];;
+
+        Log::log("Retrieve: " . $url);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
@@ -42,6 +45,7 @@ class CurlProvider extends BaseProvider
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if ($http_code != 200) {
+            Log::log(curl_error($ch));
             throw new \Exception("File not found", 404);
         }
 

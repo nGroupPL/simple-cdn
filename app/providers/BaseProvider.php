@@ -4,6 +4,7 @@ namespace app\providers;
 
 
 use app\Helper;
+use app\Log;
 use app\Request;
 
 /**
@@ -34,8 +35,9 @@ abstract class BaseProvider
      */
     public function getFile(Request $request): string
     {
-
         $filename = ROOT . '/public/img/' . $request->host . '/' . $request->path . '/' . $request->filename;
+
+        Log::log("Obtaining file: " . $filename);
 
         if (!file_exists($filename)) {
             $data = $this->retrieve($request);
