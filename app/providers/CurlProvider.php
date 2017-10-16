@@ -45,11 +45,14 @@ class CurlProvider extends BaseProvider
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if ($http_code != 200) {
+            Log::log("Curl error: " . $http_code);
             Log::log(curl_error($ch));
             throw new \Exception("File not found", 404);
         }
 
         curl_close($ch);
+
+        Log::log("File retrieved, size: " . curl_getinfo($ch, CURLINFO_SIZE_DOWNLOAD));
 
         return $result;
 
