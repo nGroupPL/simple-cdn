@@ -5,7 +5,7 @@ namespace app;
 
 use app\providers\BaseProvider;
 use Imagine\Image\Box;
-use Imagine\Imagick\Imagine;
+use Imagine\Gd\Imagine;
 
 /**
  * Class Cdn
