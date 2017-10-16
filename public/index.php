@@ -9,7 +9,7 @@ require_once ROOT . '/app/Cdn.php';
 try {
     (new \app\Cdn())->run(require_once ROOT . '/app/config.php');
 } catch (Exception $e) {
-    \app\Log::log($e->getMessage());
+    \app\Log::log($e->getCode() . ': ' . $e->getMessage());
 //    switch ($e->getCode()) {
 //        case 404:
 //            $image = '404.png';
