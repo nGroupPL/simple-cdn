@@ -50,9 +50,8 @@ class CurlProvider extends BaseProvider
             throw new \Exception("File not found", 404);
         }
 
-        curl_close($ch);
-
         Log::log("File retrieved, size: " . curl_getinfo($ch, CURLINFO_SIZE_DOWNLOAD));
+        curl_close($ch);
 
         return $result;
 
