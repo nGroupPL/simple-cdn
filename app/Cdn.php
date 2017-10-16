@@ -6,6 +6,9 @@ namespace app;
 use app\providers\BaseProvider;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
+use Imagine\Image\ImageInterface;
+use Imagine\Image\Palette\RGB;
+use Imagine\Image\Point;
 
 /**
  * Class Cdn
@@ -70,8 +73,37 @@ class Cdn
         $this->resized_file = ROOT . '/public/' . ltrim($this->request->uri, '/');
         Helper::mkdir(pathinfo($this->resized_file, PATHINFO_DIRNAME));
 
+        $width = $this->request->width;
+        $height = $this->request->height;
+
         $image = (new Imagine())->open($this->original_file);
-        $image->resize(new Box($this->request->width, $this->request->height));
+
+        switch ($this->request->mode) {
+
+            case 1:
+                $image->resize(new Box($width, $height));
+                break;
+            case 2:
+
+                $size = new Box($width, $height);
+                $mode = ImageInterface::THUMBNAIL_INSET;
+                $image = $image->thumbnail($size, $mode);
+                $sizeR = $image->getSize();
+
+                $tmp = (new Imagine())->create($size, (new RGB())->color('#ffffff', 0));
+                $startX = $startY = 0;
+                if ($sizeR->getWidth() < $width) {
+                    $startX = ($width - $sizeR->getWidth()) / 2;
+                }
+                if ($sizeR->getHeight() < $height) {
+                    $startY = ($height - $sizeR->getHeight()) / 2;
+                }
+                $tmp->paste($image, new Point($startX, $startY));
+                $image = $tmp;
+                break;
+
+        }
+
         $image->save($this->resized_file);
     }
 
