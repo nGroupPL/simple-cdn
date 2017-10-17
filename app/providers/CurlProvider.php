@@ -24,9 +24,15 @@ class CurlProvider extends BaseProvider
     public function retrieve(Request $request): string
     {
 
-        $url = "https://" . $request->host . '/api/v1/cdn?file='
+        if (isset($this->config['provider_host'])) {
+            $url = $this->config['provider_host'];
+        } else {
+            $url = "https://" . $request->host . '/api/v1/cdn';
+        }
+
+        $url .= '?file='
             . base64_encode($request->path . '/' . $request->filename)
-            . '&token=' . $this->config['token'];;
+            . '&token=' . $this->config['token'];
 
         Log::log("Retrieve: " . $url);
         $ch = curl_init();
@@ -42,11 +48,16 @@ class CurlProvider extends BaseProvider
         }
         $result = curl_exec($ch);
 
+//        var_dump($url);
+//        echo $result;
+//        curl_close($ch);
+//        exit;
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
+
         if ($http_code != 200) {
-            Log::log("Curl error: " . $http_code);
-            Log::log(curl_error($ch));
+            Log::log("HTTP code: " . $http_code);
+            Log::log("Curl error: " . curl_error($ch));
             throw new \Exception("File not found", 404);
         }
 

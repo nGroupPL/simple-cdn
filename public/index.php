@@ -1,7 +1,7 @@
 <?php
 
 define('ROOT', dirname(__DIR__));
-defined('DEV_MODE') || define('DEV_MODE', false);
+defined('DEV_MODE') || define('DEV_MODE', isset($_SERVER['DEV_MODE']) ? $_SERVER['DEV_MODE'] : false);
 
 require_once ROOT . '/vendor/autoload.php';
 require_once ROOT . '/app/Cdn.php';
