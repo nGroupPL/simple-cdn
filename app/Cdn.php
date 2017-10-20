@@ -101,6 +101,16 @@ class Cdn
                 $tmp->paste($image, new Point($startX, $startY));
                 $image = $tmp;
                 break;
+            case 3:
+                $size = new Box($width, $height);
+                $mode = ImageInterface::THUMBNAIL_INSET;
+                $image = $image->thumbnail($size, $mode);
+                break;
+            case 4:
+                $size = new Box($width, $height);
+                $mode = ImageInterface::THUMBNAIL_OUTBOUND;
+                $image = $image->thumbnail($size, $mode);
+                break;
 
         }
 
