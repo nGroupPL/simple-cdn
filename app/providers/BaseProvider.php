@@ -5,6 +5,7 @@ namespace app\providers;
 
 use app\Helper;
 use app\Log;
+use app\processors\BaseProcessor;
 use app\Request;
 
 /**
@@ -30,17 +31,17 @@ abstract class BaseProvider
     /**
      * Get original filename, if not exists retrieve it from endpoint
      *
-     * @param Request $request
+     * @param BaseProcessor $processor
      * @return string
      */
-    public function getFile(Request $request): string
+    public function getFile(BaseProcessor $processor): string
     {
-        $filename = ROOT . '/public/img/' . $request->host . '/' . $request->path . '/' . $request->filename;
+        $filename = ROOT . '/public/img/' . $processor->host . '/' . $processor->path . '/' . $processor->filename;
 
         Log::log("Obtaining file: " . $filename);
 
         if (!file_exists($filename)) {
-            $data = $this->retrieve($request);
+            $data = $this->retrieve($processor);
             Helper::mkdir(pathinfo($filename, PATHINFO_DIRNAME));
             file_put_contents($filename, $data);
         }
@@ -49,5 +50,5 @@ abstract class BaseProvider
 
     }
 
-    abstract public function retrieve(Request $request): string;
+    abstract public function retrieve(BaseProcessor $processor): string;
 }

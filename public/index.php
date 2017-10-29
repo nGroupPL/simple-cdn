@@ -20,5 +20,11 @@ try {
 //    }
 
 //    \app\Helper::output($image, 'png');
+    if (DEV_MODE) {
+        echo '<h1>' . $e->getMessage() . '</h1>';
+//        echo '<h2>' . $e->getMessage() . '</h2>';
+        echo '<h3>' . $e->getFile() . '#' . $e->getLine() . '</h3>';
+        exit;
+    }
     \app\Helper::output(ROOT . '/dummy/other.png', 'png');
 }
