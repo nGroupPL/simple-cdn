@@ -58,4 +58,30 @@ class Helper
         echo file_get_contents($filename);
     }
 
+
+    /**
+     * Convert hex color to rgb
+     *
+     * @param $hex
+     * @return array
+     * @throws \Exception
+     */
+    public static function hex2rgb($hex): array
+    {
+        $hex = str_replace("#", "", $hex);
+        $l = strlen($hex);
+        if ($l == 3) {
+            $r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
+            $g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
+            $b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));
+        } elseif ($l == 6) {
+            $r = hexdec(substr($hex, 0, 2));
+            $g = hexdec(substr($hex, 2, 2));
+            $b = hexdec(substr($hex, 4, 2));
+        } else {
+            throw new \Exception("Invalid color", 500);
+        }
+
+        return [$r, $g, $b];
+    }
 }
