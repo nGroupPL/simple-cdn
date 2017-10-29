@@ -4,7 +4,7 @@ namespace app\providers;
 
 
 use app\Log;
-use app\Request;
+use app\processors\BaseProcessor;
 
 /**
  * Class CurlProvider
@@ -17,21 +17,21 @@ class CurlProvider extends BaseProvider
 
     /**
      *
-     * @param Request $request
+     * @param BaseProcessor $processor
      * @return string
      * @throws \Exception
      */
-    public function retrieve(Request $request): string
+    public function retrieve(BaseProcessor $processor): string
     {
 
         if (isset($this->config['provider_host'])) {
             $url = $this->config['provider_host'];
         } else {
-            $url = "https://" . $request->host . '/api/v1/cdn';
+            $url = "https://" . $processor->host . '/api/v1/cdn';
         }
 
         $url .= '?file='
-            . base64_encode($request->path . '/' . $request->filename)
+            . base64_encode($processor->path . '/' . $processor->filename)
             . '&token=' . $this->config['token'];
 
         Log::log("Retrieve: " . $url);

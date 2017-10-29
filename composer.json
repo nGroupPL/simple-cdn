@@ -9,7 +9,22 @@
       "email": "piotr.grzelka@ngroup.pl"
     }
   ],
+  "repositories": {
+    "msfonts": {
+      "type": "package",
+      "package": {
+        "name": "caarlos0-graveyard/msfonts",
+        "version": "1.0.0",
+        "source": {
+          "url": "https://github.com/caarlos0-graveyard/msfonts",
+          "type": "git",
+          "reference": "master"
+        }
+      }
+    }
+  },
   "require": {
-    "imagine/imagine": "0.7.x-dev"
+    "imagine/imagine": "0.7.x-dev",
+    "caarlos0-graveyard/msfonts": "*"
   }
 }

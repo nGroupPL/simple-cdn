@@ -4,9 +4,19 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "02ac3c07c2f6ff1d2e4c5581b22eafcd",
-    "content-hash": "77d62297441f42597b0dc2da10e4afe7",
+    "hash": "ca764ebb51a7f4880e25971bf3c5a1e5",
+    "content-hash": "9b9f33601e347fc2896346cedd29d134",
     "packages": [
+        {
+            "name": "caarlos0-graveyard/msfonts",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/caarlos0-graveyard/msfonts",
+                "reference": "master"
+            },
+            "type": "library"
+        },
         {
             "name": "imagine/imagine",
             "version": "dev-develop",
