@@ -24,7 +24,17 @@ class ImgGenProcessor extends BaseProcessor
      */
     public function run()
     {
-        list($width, $height, $bg_color, $fg_color, $font, $font_size, $text) = $this->uri_parts;
+        if (count($this->uri_parts) < 6) {
+            throw new \Exception("Not enough parameters");
+        }
+
+        list($size, $bg_color, $fg_color, $font, $font_size, $text) = $this->uri_parts;
+
+        $size = explode('x', $size);
+        if (count($size) != 2) {
+            throw new \Exception("Invalid size");
+        }
+        list($width, $height) = $size;
 
         $text = pathinfo($text, PATHINFO_FILENAME);
 
@@ -33,12 +43,19 @@ class ImgGenProcessor extends BaseProcessor
         $font_size = filter_var($font_size, FILTER_VALIDATE_INT);
         $font = preg_replace("/[^A-Za-z0-9_]/", '', $font);
 
-        if (empty($width) || empty($height) || empty($font_size)) {
+        if (empty($width) || empty($height) || $width < 0 || $height < 0) {
             throw new \Exception("Invalid call");
+        }
+
+        if (empty($font_size)) {
+            // @todo we need better algorithm for this
+            $font_size = $width / 1.5;
         }
 
         $file = ROOT . '/public/' . ltrim($this->app->uri, '/');
         Helper::mkdir(pathinfo($file, PATHINFO_DIRNAME));
+
+        empty($font) && $font = 'ariblk';
 
         $font_file = ROOT . '/vendor/caarlos0-graveyard/msfonts/fonts/' . $font . '.ttf';
 
