@@ -49,7 +49,10 @@ class ImgGenProcessor extends BaseProcessor
 
         if (empty($font_size)) {
             // @todo we need better algorithm for this
-            $font_size = $width / 1.5;
+            $font_size = $width - 30 * strlen($text);
+            if ($font_size <= 0) {
+                $font_size = 5;
+            }
         }
 
         $file = ROOT . '/public/' . ltrim($this->app->uri, '/');
