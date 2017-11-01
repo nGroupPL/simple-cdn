@@ -36,7 +36,9 @@ class ImgGenProcessor extends BaseProcessor
         }
         list($width, $height) = $size;
 
+
         $text = pathinfo($text, PATHINFO_FILENAME);
+        $text = urldecode($text);
 
         $width = filter_var($width, FILTER_VALIDATE_INT);
         $height = filter_var($height, FILTER_VALIDATE_INT);
